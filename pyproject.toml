@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "mtcc"
+version = "0.1.0"
+description = "mtcc is a content creator to upload a music torrent"
+authors = ["GuiEpi <guillaume.coussot@epitech.eu>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pymediainfo = "^6.0.1"
+mako = "^1.2.4"
+streamlit = "^1.22.0"
+deezer-python = "^5.12.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
