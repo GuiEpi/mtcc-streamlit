@@ -51,6 +51,9 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Music file test
+music/
+
 # Translations
 *.mo
 *.pot
