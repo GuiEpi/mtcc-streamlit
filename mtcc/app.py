@@ -93,7 +93,9 @@ def main() -> None:
                 total_size += file.size
             pres = Pres(settings, "", nfo.properties, upload_infos)
             pres.search()
-        st.success(f"Album found {pres.properties.title} by {pres.properties.artist.name}")
+        st.success(
+            f"Album found {pres.properties.title} by {pres.properties.artist.name}"
+        )
         st.text("Torrent name")
         st.code(pres.torrent_name)
         st.text("Torrent description")
