@@ -1,16 +1,16 @@
 from mako.template import Template
-from datetime import datetime
-from deezer import Album
 import deezer
 
 
 class Pres:
     def __init__(
         self,
+        settings: dict,
         research: str = None,
         nfo_properties: dict = None,
         upload_infos: dict = None,
     ) -> None:
+        self.settings = settings
         self.research = research
         self.nfo_properties = nfo_properties
         self.upload_infos = upload_infos
@@ -21,7 +21,10 @@ class Pres:
 
     def __str__(self):
         return self.template.render(
-            album=self.properties, nfo=self.nfo_properties, upload=self.upload_infos
+            album=self.properties,
+            nfo=self.nfo_properties,
+            upload=self.upload_infos,
+            settings=self.settings,
         )
 
     def search(self) -> None:

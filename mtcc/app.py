@@ -2,12 +2,39 @@ from streamlit.runtime.uploaded_file_manager import UploadedFile
 import streamlit as st
 from nfo import Nfo
 from pres import Pres
+import config
 import utils
 
 
 def display_header() -> None:
     st.title("Welcome to mtcc")
     st.text("Just upload your folder")
+
+
+def display_sidebar() -> dict:
+    options = (banner for banner in config.PRES_BANNERS)
+
+    with st.sidebar:
+        st.title("Settings")
+        ripper = st.text_input("Ripper", config.NFO_RIPPER)
+        uploader = st.text_input("Uploader", config.NFO_UPLOADER)
+        selected_banner = st.sidebar.selectbox("Choose your banner theme", options)
+        with st.expander(selected_banner):
+            for file_name in config.PRES_BANNERS_FILES_NAME:
+                st.image(f"{config.PRES_BANNERS[selected_banner]}/{file_name}")
+        ygg_link = st.text_input("Ygg profile url", config.PRES_YGG_LINK)
+        ygg_tag = st.text_input("Ygg uploader tag", config.PRES_YGG_TAG)
+
+    return {
+        "ripper": ripper,
+        "uploader": uploader,
+        "nfo_name": config.NFO_NAME,
+        "nfo_version": config.NFO_VERSION,
+        "banner_theme": config.PRES_BANNERS[selected_banner],
+        "ygg_link": ygg_link,
+        "ygg_tag": ygg_tag,
+        "mtcc_link": config.MTCC_LINK,
+    }
 
 
 def display_uploader() -> UploadedFile:
@@ -23,7 +50,7 @@ def display_uploader() -> UploadedFile:
     return files
 
 
-def extract_files():
+def extract_files() -> UploadedFile:
 
     uploaded_files = display_uploader()
 
@@ -33,10 +60,11 @@ def extract_files():
 
 def main() -> None:
     display_header()
+    settings = display_sidebar()
     upload_infos = {}
     nb_file = 0
     total_size = 0
-    nfo = Nfo()
+    nfo = Nfo(settings)
 
     if files := extract_files():
         with st.spinner(text="nfo creation..."):
@@ -60,7 +88,7 @@ def main() -> None:
             total_size = 0
             for file in files:
                 total_size += file.size
-            pres = Pres("", nfo.properties, upload_infos)
+            pres = Pres(settings, "", nfo.properties, upload_infos)
             pres.search()
 
         st.code(pres.torrent_name)
