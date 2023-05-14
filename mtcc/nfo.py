@@ -6,18 +6,21 @@ import json
 
 
 class Nfo:
-    def __init__(self) -> None:
+    def __init__(self, settings: dict) -> None:
         self.tracks = []
         self.properties = {
             "track_name_maxlen": 0,
             "playing_time": "",
             "total_size": 0,
         }
+        self.settings = settings
         self.template = Template(filename="./templates/nfo.mako")
         self.filename = "mtcc_no_name"
 
     def __str__(self):
-        return self.template.render(tracklist=self.tracks, album=self.properties)
+        return self.template.render(
+            tracklist=self.tracks, album=self.properties, settings=self.settings
+        )
 
     def get_tagfiles(self, files) -> list[dict]:
         tag_files = []
