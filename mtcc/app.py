@@ -8,7 +8,7 @@ import utils
 
 def display_header() -> None:
     st.title("Welcome to mtcc")
-    st.text("Just upload your folder")
+    st.text("mtcc is a content creator to upload music torrent")
 
 
 def display_sidebar() -> dict:
@@ -19,9 +19,10 @@ def display_sidebar() -> dict:
         ripper = st.text_input("Ripper", config.NFO_RIPPER)
         uploader = st.text_input("Uploader", config.NFO_UPLOADER)
         selected_banner = st.sidebar.selectbox("Choose your banner theme", options)
-        with st.expander(selected_banner):
-            for file_name in config.PRES_BANNERS_FILES_NAME:
-                st.image(f"{config.PRES_BANNERS[selected_banner]}/{file_name}")
+        for banner in config.PRES_BANNERS:
+            with st.expander(banner):
+                for file_name in config.PRES_BANNERS_FILES_NAME:
+                    st.image(f"{config.PRES_BANNERS[banner]}/{file_name}")
         ygg_link = st.text_input("Ygg profile url", config.PRES_YGG_LINK)
         ygg_tag = st.text_input("Ygg uploader tag", config.PRES_YGG_TAG)
 
@@ -66,6 +67,7 @@ def main() -> None:
     total_size = 0
     nfo = Nfo(settings)
 
+    st.header("Nfo")
     if files := extract_files():
         with st.spinner(text="nfo creation..."):
             nb_file = len(files)
@@ -83,6 +85,7 @@ def main() -> None:
             file_name=f"{nfo.filename}.nfo",
             mime="text/x-nfo",
         )
+        st.header("Torrent content")
         with st.spinner(text="searching album..."):
             nb_file = len(files)
             total_size = 0
@@ -90,8 +93,10 @@ def main() -> None:
                 total_size += file.size
             pres = Pres(settings, "", nfo.properties, upload_infos)
             pres.search()
-
+        st.success(f"Album found {pres.properties.title} by {pres.properties.artist.name}")
+        st.text("Torrent name")
         st.code(pres.torrent_name)
+        st.text("Torrent description")
         st.code(str(pres), language="bbcode")
 
 
