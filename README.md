@@ -66,7 +66,7 @@ ygg_tag = TAG
 
 1. [Install Docker Engine](#install-docker-engine)
 2. [Check network port accessibility](#check-network-port-accessibility)
-3. (optional) [Intall docker-compose](#(optional)-install-docker-compose)
+3. [(optional) Intall docker-compose](#optional-install-docker-compose)
 
 #### Install Docker Engine
 
