@@ -174,6 +174,7 @@ I already have many ideas for improvement, such as:
 - Adding a function to add a "like" next to a track in the presentation
 - Improving the UI
 - Adding a help section to access the app on a custom domain name
+- Adding logging to the app for better debugging
 - Adding tests for better code quality
 - Adding continuous integration (CI) for automated testing and deployment
 - Adding more type hints for better code readability and maintainability
