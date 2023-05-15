@@ -1,9 +1,13 @@
 [tool.poetry]
 name = "mtcc"
 version = "0.1.0"
-description = "mtcc is a content creator to upload a music torrent"
-authors = ["GuiEpi <guillaume.coussot@epitech.eu>"]
+description = "mtcc is a user-friendly tool designed for content creators to easily upload a music torrent."
+authors = ["GuiEpi <guiepi@gmail.com>"]
+maintainers = ["GuiEpi <guiepi@gmail.com>"]
 readme = "README.md"
+license = "Apache-2.0"
+repository = "https://github.com/GuiEpi/mtcc"
+
 
 [tool.poetry.dependencies]
 python = "^3.10"
