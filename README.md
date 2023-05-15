@@ -66,7 +66,7 @@ ygg_tag = TAG
 
 1. [Install Docker Engine](#install-docker-engine)
 2. [Check network port accessibility](#check-network-port-accessibility)
-3. (optional) [Intall docker-compose](#https://docs.docker.com/compose/install/)
+3. (optional) [Intall docker-compose](#(optional)-install-docker-compose)
 
 #### Install Docker Engine
 
@@ -83,7 +83,7 @@ sudo docker run hello-world
 #### Check network port accessibility
 As you and your users are behind your corporate VPN, you need to make sure all of you can access a certain network port. Let's say port `8501`, as it is the default port used by Streamlit. Contact your IT team and request access to port `8501` for you and your users.
 
-#### Install docker-compose
+#### (optional) Install docker-compose
 If you want to use `docker-compose` to manage your containers, you can install it by following these steps:
 
 1. Visit the official [docker-compose](#https://docs.docker.com/compose/install/) installation guide for detailed instructions.
