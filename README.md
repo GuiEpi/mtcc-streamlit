@@ -1,3 +1,4 @@
+[](https://raw.githubusercontent.com/GuiEpi/mtcc/master/assets/mtcc_nfo_builder.png) [](https://raw.githubusercontent.com/GuiEpi/mtcc/master/assets/mtcc_pres.png) 
 # mtcc
 #### The quick and easy way to create and share your music torrents!
 
