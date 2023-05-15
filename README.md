@@ -50,7 +50,7 @@ poetry run streamlit run mtcc/app.py
 > Default url [http://localhost:8501](http://localhost:8501)
 
 ## Deployment
-### Add infos in `config.ini` file
+### (optional) Add infos in `config.ini` file
 The .ini file allows to define default configuration values, however it is optional
 ```ini
 [nfo]
