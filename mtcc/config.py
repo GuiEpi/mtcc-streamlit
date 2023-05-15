@@ -7,7 +7,7 @@ CONFIG.read(CONFIG_PATH)
 MTCC_LINK = "https://github.com/GuiEpi/mtcc"
 
 # nfo
-NFO_NAME = "KK Nfo Builder"
+NFO_NAME = "mtcc Nfo Builder"
 NFO_VERSION = "1.0.0"
 NFO_RIPPER = CONFIG.get("nfo", "ripper")
 NFO_UPLOADER = CONFIG.get("nfo", "uploader")
