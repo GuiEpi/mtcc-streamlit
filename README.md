@@ -1,7 +1,6 @@
 ![](https://raw.githubusercontent.com/GuiEpi/mtcc/master/assets/mtcc_nfo_builder.png) ![](https://raw.githubusercontent.com/GuiEpi/mtcc/master/assets/mtcc_pres.png) 
 # mtcc
 #### The quick and easy way to create and share your music torrents!
-
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-310/)
 
 mtcc is a user-friendly tool designed for content creators to easily upload a music torrent. The application includes an NFO builder and a presentation generator in BBCode format, all accessible through a Streamlit web page.
@@ -9,6 +8,8 @@ mtcc is a user-friendly tool designed for content creators to easily upload a mu
 Simply upload the album of your choice and mtcc will generate a downloadable NFO as well as a presentation for the album that can be copied in one click, without the need to provide any additional information.
 
 mtcc uses [MediaInfo](https://mediaarea.net/en/MediaInfo) to extract data from audio files, ensuring that 100% of the information in the NFO is reliable. [Streamlit](https://streamlit.io) makes the application easy to use and provides a smooth user experience.
+
+![](https://raw.githubusercontent.com/GuiEpi/mtcc/master/assets/mtcc_view.gif)
 
 - [Dependencies](#dependencies)
 - [Clone the repo](#clone-the-repo)
@@ -65,6 +66,7 @@ ygg_tag = TAG
 
 1. [Install Docker Engine](#install-docker-engine)
 2. [Check network port accessibility](#check-network-port-accessibility)
+3. (optional) [Intall docker-compose](#https://docs.docker.com/compose/install/)
 
 #### Install Docker Engine
 
@@ -77,17 +79,79 @@ Verify that Docker Engine is installed correctly by running the `hello-world` Do
 sudo docker run hello-world
 ```
 > Follow Docker's official [post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/) to run Docker as a non-root user, so that you don't have to preface the `docker` command with `sudo`.
+
 #### Check network port accessibility
 As you and your users are behind your corporate VPN, you need to make sure all of you can access a certain network port. Let's say port `8501`, as it is the default port used by Streamlit. Contact your IT team and request access to port `8501` for you and your users.
 
+#### Install docker-compose
+If you want to use `docker-compose` to manage your containers, you can install it by following these steps:
+
+1. Visit the official [docker-compose](#https://docs.docker.com/compose/install/) installation guide for detailed instructions.
+2. Choose the installation method that is suitable for your operating system.
+
+
 ### Create and start containers
 
+#### Without docker-compose
+
+#### Build a Docker image
+The [docker build](https://docs.docker.com/engine/reference/commandline/build/) command builds an image from a `Dockerfile` . Run the following command from the `mtcc/` directory on your server to build the image:
+```bash
+docker build -t mtcc .
+```
+The `-t` flag is used to tag the image. Here, we have tagged the image `mtcc`. If you run:
+```bash
+docker images
+```
+You should see a `mtcc` image under the REPOSITORY column. For example:
+```
+REPOSITORY   TAG       IMAGE ID       CREATED              SIZE
+mtcc         latest    70b0759a094d   About a minute ago   1.02GB
+```
+
+#### Run the Docker container
+Now that you have built the image, you can run the container by executing:
+```bash
+docker run -p 8501:8501 mtcc
+```
+The `-p` flag publishes the container’s port 8501 to your server’s 8501 port.
+
+If all went well, you should see an output similar to the following:
+```
+docker run -p 8501:8501 mtcc
+
+  You can now view mtcc app in your browser.
+
+  URL: http://0.0.0.0:8501
+```
+To view mtcc app, users can browse to [`http://0.0.0.0:8501`](http://0.0.0.0:8501) or [`http://localhost:8501`](http://localhost:8501)
+
+#### With docker-compose
+`docker-compose` is a powerful tool that allows you to define and manage multi-container applications. While it excels at orchestrating multiple containers, you can also use it for simplifying the build and run process of a single container. Here's how you can use docker-compose to build and run your container with a single command:
 ```bash
 docker-compose up --build
 ```
-You can now access mtcc at [http://localhost:8501](http://localhost:8501)
+The `--build` flag ensures that the images are rebuilt if there are any changes in the Dockerfiles or build context.
+
+If all goes well, you should see the output indicating that the containers are being built and started. Once the process is complete, you should see a message similar to the following:
+```
+Recreating mtcc_streamlit_1 ... done
+Attaching to mtcc_streamlit_1
+streamlit_1  | 
+streamlit_1  | Collecting usage statistics. To deactivate, set browser.gatherUsageStats to False.
+streamlit_1  |
+streamlit_1  | 
+streamlit_1  |   You can now view your Streamlit app in your browser.
+streamlit_1  |
+streamlit_1  |   URL: http://0.0.0.0:8501
+streamlit_1  |
+```
+Your mtcc app is now running inside a container.
+
+To view your mtcc app, open a web browser and navigate to [`http://localhost:8501`](http://localhost:8501). You should be able to access and interact with mtcc.
 
 ## Contribute
+
 #### Fork the repository 
 Before you can contribute, you need to make a copy (fork) of the repository to your own GitHub account. You can do this by clicking the "Fork" button in the upper-right corner of the repository page.
 
