@@ -26,6 +26,7 @@ coverage.xml
 .vscode
 .idea
 
-.banners/
-.music/
-.tests/
+banners
+music
+tests
+assets
