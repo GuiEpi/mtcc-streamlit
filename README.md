@@ -20,9 +20,9 @@ mtcc uses [MediaInfo](https://mediaarea.net/en/MediaInfo) to extract data from a
 
 ## Dependencies
 [git](https://git-scm.com/downloads)
-### Dev
+### Development
 [MediaInfo](https://mediaarea.net/en/MediaInfo), [Poetry](https://python-poetry.org/docs/#installation)
-### Prod
+### Production
 [Docker](https://docs.docker.com/get-docker/)
 > See [Prerequisites](#prerequisites)
 
