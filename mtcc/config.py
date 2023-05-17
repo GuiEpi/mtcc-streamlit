@@ -40,10 +40,10 @@ PRES_BANNERS = {
 
 PRES_BANNERS = OrderedDict(
     [
-        ("kk_banners_blue", f"{PRES_BANNERS_LINK}/kk_banners_blue"),
-        ("kk_banners_orange", f"{PRES_BANNERS_LINK}/kk_banners_orange"),
         ("play_banners_purple", f"{PRES_BANNERS_LINK}/play_banners_purple"),
         ("play_banners_orange", f"{PRES_BANNERS_LINK}/play_banners_orange"),
+        ("kk_banners_blue", f"{PRES_BANNERS_LINK}/kk_banners_blue"),
+        ("kk_banners_orange", f"{PRES_BANNERS_LINK}/kk_banners_orange"),
     ]
 )
 if PRES_DEFAULT_BANNER in PRES_BANNERS:
