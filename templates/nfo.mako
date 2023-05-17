@@ -33,7 +33,7 @@ Genre................:
 % endif
 Source...............: Web
 Year.................: ${album['recorded_date']}
-Ripper...............: EAC (Secure mode) / LAME 3.92 & Asus CD-S520
+Ripper...............: 
 % if album['format'] == "MPEG Audio":
 Codec................: ${album['writing_library']}
 Version..............: ${album['format']} ${album['format_version']} ${album['format_profile']}
