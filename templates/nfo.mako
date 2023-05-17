@@ -28,17 +28,32 @@ ${hline()}
 
 Artist...............: ${album['album_performer']}
 Album................: ${album['album']}
+% if 'genre' in album:
 Genre................:
-Source...............: CD
+% endif
+Source...............: Web
 Year.................: ${album['recorded_date']}
 Ripper...............: EAC (Secure mode) / LAME 3.92 & Asus CD-S520
+% if album['format'] == "MPEG Audio":
+Codec................: ${album['writing_library']}
+Version..............: ${album['format']} ${album['format_version']} ${album['format_profile']}
+% else:
 Codec................: ${album['format_info']} (${album['format']})
 Version..............:
+% endif
 Quality..............: ${album['compression_mode']}
+% if 'other_bit_depth' in album:
 % if album['channel_s'] == 2:
 Channels.............: Stereo / ${album['other_sampling_rate'][0]} / ${album['other_bit_depth'][0]}
 % else:
 Channels.............: Mono / ${album['other_sampling_rate'][0]} / ${album['other_bit_depth'][0]}
+% endif
+% else:
+% if album['channel_s'] == 2:
+Channels.............: Stereo / ${album['other_bit_rate'][0]}
+% else:
+Channels.............: Mono / ${album['other_bit_rate'][0]}
+% endif
 % endif
 Information..........:
 
@@ -46,7 +61,9 @@ Ripped by............: ${settings['ripper']} on ${"%d/%m/%Y" | time}
 Posted by............: ${settings['uploader']} on ${"%d/%m/%Y" | time}
 
 Included.............: NFO
-
+% if 'cover_type' in album:
+Cover................: ${album['cover_type']}
+% endif
 
 ${hline()}
 ${ "Tracklisting" | center }
