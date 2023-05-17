@@ -1,3 +1,4 @@
+from streamlit.runtime.uploaded_file_manager import UploadedFile
 from datetime import datetime, timedelta
 from mako.template import Template
 from pymediainfo import MediaInfo
@@ -14,30 +15,18 @@ class Nfo:
             "total_size": 0,
         }
         self.settings = settings
+        with open("./templates/nfo.mako", "r") as template_file:
+            self.template = Template(template_file.read())
         self.template = Template(filename="./templates/nfo.mako")
         self.filename = "mtcc_no_name"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.template.render(
             tracklist=self.tracks, album=self.properties, settings=self.settings
         )
 
-    def get_tagfiles(self, files) -> list[dict]:
-        tag_files = []
-        audio_properties = {}
-        for file in files:
-            if "audio" in file.type:
-                tag_file = MediaInfo.parse(file)
-                tag_file_json = json.loads(tag_file.to_json())
-                tag_files.append(tag_file_json["tracks"][0])
-                if not audio_properties:
-                    audio_properties = tag_file_json["tracks"][0]
-                    audio_properties.update(tag_file_json["tracks"][1])
-        self.properties.update(audio_properties)
-        return tag_files
-
-    def parse(self, files) -> None:
-        tag_files = self.get_tagfiles(files)
+    def parse(self, files: UploadedFile) -> None:
+        tag_files = self._get_tagfiles_from_mediainfo(files)
         playing_time = []
 
         for tag_file in tag_files:
@@ -47,7 +36,7 @@ class Nfo:
                 track[tag_properties] = tag_file[tag_properties]
 
             if "track_name_position" not in tag_file:
-                print(f"[ERROR] track_name_position not found")
+                raise ValueError("track_name_position not found")
 
             track["track_name_len"] = len(track["track_name"])
 
@@ -67,18 +56,35 @@ class Nfo:
         self.tracks.sort(key=lambda k: int(k["track_name_position"]))
 
         if len(self.tracks) == 0:
-            print("[ERROR] No tracks found")
+            raise ValueError("No tracks found")
 
         self.properties.update(self.tracks[0])
+        self._format_properties(playing_time)
+
+    def _format_properties(self, playing_time: list[str]) -> None:
         self.properties["total_size"] = utils.convert_size(
             self.properties["total_size"]
         )
-        self.properties["playing_time"] = self.__get_playing_time(playing_time)
+        self.properties["playing_time"] = self._get_total_playing_time(playing_time)
         self.filename = (
             f"{self.properties['album']} [{self.properties['recorded_date']}]"
         )
 
-    def __get_playing_time(self, playing_times: dict[str]) -> str:
+    def _get_tagfiles_from_mediainfo(self, files: UploadedFile) -> list[dict]:
+        tag_files = []
+        audio_properties = {}
+        for file in files:
+            if "audio" in file.type:
+                tag_file = MediaInfo.parse(file)
+                tag_file_json = json.loads(tag_file.to_json())
+                tag_files.append(tag_file_json["tracks"][0])
+                if not audio_properties:
+                    audio_properties = tag_file_json["tracks"][0]
+                    audio_properties.update(tag_file_json["tracks"][1])
+        self.properties.update(audio_properties)
+        return tag_files
+
+    def _get_total_playing_time(self, playing_times: dict[str]) -> str:
         time_deltas = [
             timedelta(minutes=int(time.split(":")[0]), seconds=int(time.split(":")[1]))
             for time in playing_times

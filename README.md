@@ -60,6 +60,7 @@ uploader = uploader name
 [pres]
 ygg_link = https://domain_name.com/profile/profile-name
 ygg_tag = TAG
+default_banners = play_banners_orange
 ```
 
 ### Prerequisites
@@ -234,7 +235,6 @@ That's it! Once you've made your changes, submit a pull request. If your banners
 
 ## Improvement ideas
 I already have many ideas for improvement, such as:
-- Adding an artist/album search section to only generate the presentation without the NFO
 - Linking to other album streams of the same artist in the presentation
 - Adding a function to add a "like" next to a track in the presentation
 - Improving the UI

@@ -29,10 +29,21 @@ ${track.track_position} - ${track.title} (${datetime.fromtimestamp(track.duratio
 [img]${settings['banner_theme']}/technical_details.png[/img]
  
 [b]Format :[/b] Digital Media
+% if nfo['format'] == "MPEG Audio":
+[b]Codec audio :[/b] MP3
+% else:
 [b]Codec audio :[/b] ${nfo['format']} (${nfo['other_bit_depth'][0]})
+% endif
+% if nfo['other_sampling_rate']:
 [b]Fréquence :[/b] ${nfo['other_sampling_rate'][0]}
+%endif
+% if 'audio_bitrate' in nfo:
+[b]Débit Audio :[/b] ${(nfo['audio_bitrate'])} kb/s
+% elif 'bit_depth' in nfo:
 [b]Débit Audio :[/b] ${(nfo['sampling_rate'] * nfo['channel_s'] * nfo['bit_depth']) / 1000} kb/s
- 
+% else:
+[b]Débit Audio :[/b] ${nfo['other_bit_rate'][0]}
+% endif
  
 [img]${settings['banner_theme']}/download.png[/img]
  
