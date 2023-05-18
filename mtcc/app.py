@@ -156,7 +156,7 @@ def display_mtcc(settings: dict) -> None:
     st.divider()
     nfo = Nfo(settings)
     st.header("Upload")
-    if files := extract_files("display_mtcc"):
+    if files := extract_files("display_mtcc_extract_files"):
         st.header("Nfo")
         with st.spinner(text="nfo creation..."):
             nfo.parse(files)
@@ -180,7 +180,7 @@ def display_mtcc(settings: dict) -> None:
         else:
             st.error("Album not found")
             st.text("Try to find it with a research")
-            if research := search_album("display_mtcc"):
+            if research := search_album("display_mtcc_search_album"):
                 with st.spinner(text="Research album..."):
                     albums = pres.search(research)
                 if albums:
@@ -203,7 +203,7 @@ def display_mtcc_pres(settings: dict) -> None:
     pres = Pres(settings)
     technical_details, infos_download = extract_information()
     st.header("Find album")
-    if research := search_album("display_mtcc_pres"):
+    if research := search_album("display_mtcc_pres_search_album"):
         with st.spinner(text="Research album..."):
             albums = pres.search(research)
         if albums:
