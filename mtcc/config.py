@@ -58,7 +58,7 @@ logbytes = 512000
 logbackups = 3
 
 def setup_logger(name: str, level=logging.INFO):
-    handler = logging.NullHandler()
+    handler = logging.StreamHandler()
     handler = RotatingFileHandler(f"mtcc.log", "a", logbytes, logbackups)
     handler.setFormatter(formatter)
 
