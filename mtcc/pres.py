@@ -35,8 +35,8 @@ class Pres:
 
     def _search_by_research(self, research: str) -> list[deezer.Album]:
         albums = []
-        result = self.client.search(research)
         try:
+            result = self.client.search(research)
             for data in result[:20]:
                 album = data.get_album()
                 if album.id not in [a.id for a in albums]:
@@ -49,29 +49,29 @@ class Pres:
     def _search_by_album_performer(self) -> deezer.Album | None:
         album = None
         if self.nfo_properties:
-            artists = self.client.search_artists(self.nfo_properties["album_performer"])
             try:
+                artists = self.client.search_artists(self.nfo_properties["album_performer"])
                 for artist in artists[:10]:
                     for album in artist.get_albums():
                         if self.nfo_properties["album"] == album.title:
                             self.update_properties(album)
                             return album
             except Exception as e:
-                self.logger.error(f"Album not found for performer {artist} : {e}")
+                self.logger.error(f"Album not found for performer {self.nfo_properties['album_performer']} : {e}")
                 return album
         return album
 
     def _search_by_album(self) -> deezer.Album | None:
         album = None
         if self.nfo_properties:
-            albums = self.client.search_albums(self.nfo_properties["album"])
             try:
+                albums = self.client.search_albums(self.nfo_properties["album"])
                 for album in albums[:10]:
                     if self.nfo_properties["album"] == album.title:
                         self.update_properties(album)
                         return album
             except Exception as e:
-                self.logger.error(f"Album not found for album {album} : {e}")
+                self.logger.error(f"Album not found for album {self.nfo_properties['album']} : {e}")
                 return album
         return album
 
