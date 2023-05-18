@@ -167,6 +167,7 @@ def display_mtcc(settings: dict) -> None:
             data=str(nfo),
             file_name=f"{nfo.filename}.nfo",
             mime="text/x-nfo",
+            key="display_mtcc_download_nfo"
         )
         st.header("Torrent content")
         pres = Pres(settings, nfo.properties, upload_infos)
@@ -235,6 +236,7 @@ def display_nfo_builder(settings: dict) -> None:
             data=str(nfo),
             file_name=f"{nfo.filename}.nfo",
             mime="text/x-nfo",
+            key="display_nfo_builder_download_nfo"
         )
         st.code(str(nfo), language="text")
 

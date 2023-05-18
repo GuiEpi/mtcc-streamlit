@@ -1,6 +1,7 @@
+from logging.handlers import RotatingFileHandler
 from collections import OrderedDict
 import configparser
-import os
+import logging
 
 
 CONFIG_PATH = "./config.ini"
@@ -48,3 +49,21 @@ PRES_BANNERS = OrderedDict(
 )
 if PRES_DEFAULT_BANNER in PRES_BANNERS:
     PRES_BANNERS.move_to_end(PRES_DEFAULT_BANNER, last=False)
+
+# logging
+formatter = logging.Formatter(
+    "%(asctime)s %(module)9s:%(lineno)-4s %(levelname)-9s %(message)s"
+)
+logbytes = 512000
+logbackups = 3
+
+def setup_logger(name: str, level=logging.INFO):
+    handler = logging.NullHandler()
+    handler = RotatingFileHandler(f"mtcc.log", "a", logbytes, logbackups)
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    logger.addHandler(handler)
+
+    return logger
