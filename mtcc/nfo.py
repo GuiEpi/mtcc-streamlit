@@ -2,12 +2,14 @@ from streamlit.runtime.uploaded_file_manager import UploadedFile
 from datetime import datetime, timedelta
 from mako.template import Template
 from pymediainfo import MediaInfo
+from config import setup_logger
 import utils
 import json
 
 
 class Nfo:
     def __init__(self, settings: dict) -> None:
+        self.logger = setup_logger(__name__)
         self.tracks = []
         self.properties = {
             "track_name_maxlen": 0,
@@ -17,7 +19,6 @@ class Nfo:
         self.settings = settings
         with open("./templates/nfo.mako", "r") as template_file:
             self.template = Template(template_file.read())
-        self.template = Template(filename="./templates/nfo.mako")
         self.filename = "mtcc_no_name"
 
     def __str__(self) -> str:
@@ -36,7 +37,9 @@ class Nfo:
                 track[tag_properties] = tag_file[tag_properties]
 
             if "track_name_position" not in tag_file:
-                raise ValueError("track_name_position not found")
+                self.logger.critical(f"Missing track number for file {track['track_name']}")
+                raise ValueError(f"Missing track number for file {track['track_name']}")
+
 
             track["track_name_len"] = len(track["track_name"])
 
@@ -56,7 +59,8 @@ class Nfo:
         self.tracks.sort(key=lambda k: int(k["track_name_position"]))
 
         if len(self.tracks) == 0:
-            raise ValueError("No tracks found")
+            self.logger.critical('No media file found!')
+            raise ValueError("No media file found!")
 
         self.properties.update(self.tracks[0])
         self._format_properties(playing_time)
@@ -81,6 +85,8 @@ class Nfo:
                 if not audio_properties:
                     audio_properties = tag_file_json["tracks"][0]
                     audio_properties.update(tag_file_json["tracks"][1])
+            else:
+                self.logger.info(f"Skipping not Audio file '{file.name}'")
         self.properties.update(audio_properties)
         return tag_files
 

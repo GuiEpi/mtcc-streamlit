@@ -1,4 +1,5 @@
 from mako.template import Template
+from config import setup_logger
 import deezer
 
 
@@ -9,12 +10,13 @@ class Pres:
         nfo_properties: dict = {},
         upload_infos: dict = {},
     ) -> None:
+        self.logger = setup_logger(__name__)
         self.settings = settings
         self.nfo_properties = nfo_properties
         self.upload_infos = upload_infos
         self.properties = None
         self.client = deezer.Client()
-        self.torrent_name = None
+        self.torrent_name = ""
         self.template = Template(filename="./templates/pres.mako")
 
     def __str__(self):
@@ -39,7 +41,8 @@ class Pres:
                 album = data.get_album()
                 if album.id not in [a.id for a in albums]:
                     albums.append(album)
-        except:
+        except Exception as e:
+            self.logger.error(f"Album not found for research {research} : {e}")
             return albums
         return albums
 
@@ -53,7 +56,8 @@ class Pres:
                         if self.nfo_properties["album"] == album.title:
                             self.update_properties(album)
                             return album
-            except:
+            except Exception as e:
+                self.logger.error(f"Album not found for performer {artist} : {e}")
                 return album
         return album
 
@@ -66,13 +70,17 @@ class Pres:
                     if self.nfo_properties["album"] == album.title:
                         self.update_properties(album)
                         return album
-            except:
+            except Exception as e:
+                self.logger.error(f"Album not found for album {album} : {e}")
                 return album
         return album
 
     def update_properties(self, album: deezer.Album) -> None:
         self.properties = album
-        if self.nfo_properties["format"] == "MPEG Audio":
-            self.torrent_name = f"[{album.genres[0].name}] {album.artist.name} - {album.title} ({album.record_type.upper()}) [{album.release_date.strftime('%Y')}] [MP3, {int(self.nfo_properties['bit_rate'] / 1000)}-{int(self.nfo_properties['sampling_rate'] / 1000)}] KK"
-        else:
-            self.torrent_name = f"[{album.genres[0].name}] {album.artist.name} - {album.title} ({album.record_type.upper()}) [{album.release_date.strftime('%Y')}] [{self.nfo_properties['format']}, {self.nfo_properties['bit_depth']}-{int(self.nfo_properties['sampling_rate'] / 1000)}] KK"
+        try:
+            if self.nfo_properties["format"] == "MPEG Audio":
+                self.torrent_name = f"[{album.genres[0].name}] {album.artist.name} - {album.title} ({album.record_type.upper()}) [{album.release_date.strftime('%Y')}] [MP3, {int(self.nfo_properties['bit_rate'] / 1000)}-{int(self.nfo_properties['sampling_rate'] / 1000)}] KK"
+            else:
+                self.torrent_name = f"[{album.genres[0].name}] {album.artist.name} - {album.title} ({album.record_type.upper()}) [{album.release_date.strftime('%Y')}] [{self.nfo_properties['format']}, {self.nfo_properties['bit_depth']}-{int(self.nfo_properties['sampling_rate'] / 1000)}] KK"
+        except Exception as e:
+            self.logger.error(f"Error during torrent name : {e}")
