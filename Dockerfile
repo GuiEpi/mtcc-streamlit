@@ -22,4 +22,6 @@ EXPOSE 8501
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 COPY --from=py-build /app /app
 WORKDIR /app
-ENTRYPOINT [".venv/bin/python", "-m", "streamlit", "run", "mtcc/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+ENV VIRTUAL_ENV=/app/.venv
+ENV PATH=$VIRTUAL_ENV/bin:$PATH
+ENTRYPOINT ["streamlit", "run", "mtcc/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
