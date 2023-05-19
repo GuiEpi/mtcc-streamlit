@@ -67,7 +67,7 @@ default_banners = play_banners_orange
 
 1. [Install Docker Engine](#install-docker-engine)
 2. [Check network port accessibility](#check-network-port-accessibility)
-3. [Intall docker-compose](#optional-install-docker-compose)
+3. [Intall docker-compose](#install-docker-compose)
 
 #### Install Docker Engine
 
@@ -84,7 +84,7 @@ sudo docker run hello-world
 #### Install docker-compose
 If you want to use `docker-compose` to manage your containers, you can install it by following these steps:
 
-1. Visit the official [docker-compose](#https://docs.docker.com/compose/install/) installation guide for detailed instructions.
+1. Visit the official [docker-compose](https://docs.docker.com/compose/install/) installation guide for detailed instructions.
 2. Choose the installation method that is suitable for your operating system.
 
 #### Check network port accessibility
