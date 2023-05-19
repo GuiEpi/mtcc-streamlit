@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mtcc"
-version = "0.1.2"
+version = "0.1.3"
 description = "mtcc is a user-friendly tool designed for content creators to easily upload a music torrent."
 authors = ["GuiEpi <guiepi@gmail.com>"]
 maintainers = ["GuiEpi <guiepi@gmail.com>"]
