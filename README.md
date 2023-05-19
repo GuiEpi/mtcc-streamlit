@@ -66,8 +66,8 @@ default_banners = play_banners_orange
 ### Prerequisites
 
 1. [Install Docker Engine](#install-docker-engine)
-2. [Check network port accessibility](#check-network-port-accessibility)
-3. [Intall docker-compose](#install-docker-compose)
+2. [Intall docker-compose](#install-docker-compose)
+3. [Check network port accessibility](#check-network-port-accessibility)
 
 #### Install Docker Engine
 
