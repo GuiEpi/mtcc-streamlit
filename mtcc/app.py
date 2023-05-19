@@ -7,8 +7,24 @@ import config
 import utils
 import re
 
+st.set_page_config(
+    page_title="mtcc",
+    page_icon="📋",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://github.com/GuiEpi/mtcc',   
+        'Report a bug': "https://github.com/GuiEpi/mtcc/issues",
+        'About': "# mtcc - Music Torrent Content Creator\nhttps://github.com/GuiEpi/mtcc"
+    }
+)
+
 
 def display_header() -> None:
+    mttc_nfo_builder, mtcc_pres, _ = st.columns(3)
+    with mttc_nfo_builder:
+        st.image(f"{config.MTCC_LOGO_LINK}/mtcc_nfo_builder.png")
+    with mtcc_pres:
+        st.image(f"{config.MTCC_LOGO_LINK}/mtcc_pres.png")
     st.title("Welcome to the mtcc tool panel")
     st.write(
         "##### mtcc is a user-friendly tool designed for content creators to easily upload a music torrent."
@@ -167,7 +183,7 @@ def display_mtcc(settings: dict) -> None:
             data=str(nfo),
             file_name=f"{nfo.filename}.nfo",
             mime="text/x-nfo",
-            key="display_mtcc_download_nfo"
+            key="display_mtcc_download_nfo",
         )
         st.header("Torrent content")
         pres = Pres(settings, nfo.properties, upload_infos)
@@ -236,7 +252,7 @@ def display_nfo_builder(settings: dict) -> None:
             data=str(nfo),
             file_name=f"{nfo.filename}.nfo",
             mime="text/x-nfo",
-            key="display_nfo_builder_download_nfo"
+            key="display_nfo_builder_download_nfo",
         )
         st.code(str(nfo), language="text")
 
