@@ -12,10 +12,10 @@ st.set_page_config(
     page_icon="📋",
     initial_sidebar_state="expanded",
     menu_items={
-        'Get Help': 'https://github.com/GuiEpi/mtcc',   
-        'Report a bug': "https://github.com/GuiEpi/mtcc/issues",
-        'About': "# mtcc - Music Torrent Content Creator\nhttps://github.com/GuiEpi/mtcc"
-    }
+        "Get Help": "https://github.com/GuiEpi/mtcc",
+        "Report a bug": "https://github.com/GuiEpi/mtcc/issues",
+        "About": "# mtcc - Music Torrent Content Creator\nhttps://github.com/GuiEpi/mtcc",
+    },
 )
 
 
@@ -26,6 +26,7 @@ def display_header() -> None:
     with mtcc_pres:
         st.image(f"{config.MTCC_LOGO_LINK}/mtcc_pres.png")
     st.title("Welcome to the mtcc tool panel")
+    st.divider()
     st.write(
         "##### mtcc is a user-friendly tool designed for content creators to easily upload a music torrent."
     )

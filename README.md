@@ -67,7 +67,7 @@ default_banners = play_banners_orange
 
 1. [Install Docker Engine](#install-docker-engine)
 2. [Check network port accessibility](#check-network-port-accessibility)
-3. [(optional) Intall docker-compose](#optional-install-docker-compose)
+3. [Intall docker-compose](#optional-install-docker-compose)
 
 #### Install Docker Engine
 
@@ -81,58 +81,27 @@ sudo docker run hello-world
 ```
 > Follow Docker's official [post-installation steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/) to run Docker as a non-root user, so that you don't have to preface the `docker` command with `sudo`.
 
-#### Check network port accessibility
-As you and your users are behind your corporate VPN, you need to make sure all of you can access a certain network port. Let's say port `8501`, as it is the default port used by Streamlit. Contact your IT team and request access to port `8501` for you and your users.
-
-#### (optional) Install docker-compose
+#### Install docker-compose
 If you want to use `docker-compose` to manage your containers, you can install it by following these steps:
 
 1. Visit the official [docker-compose](#https://docs.docker.com/compose/install/) installation guide for detailed instructions.
 2. Choose the installation method that is suitable for your operating system.
 
+#### Check network port accessibility
+As you and your users are behind your corporate VPN, you need to make sure all of you can access a certain network port. Let's say port `8501`, as it is the default port used by Streamlit. Contact your IT team and request access to port `8501` for you and your users.
 
-### Create and start containers
-
-#### Without docker-compose
-
-#### Build a Docker image
-The [docker build](https://docs.docker.com/engine/reference/commandline/build/) command builds an image from a `Dockerfile` . Run the following command from the `mtcc/` directory on your server to build the image:
-```bash
-docker build -t mtcc .
-```
-The `-t` flag is used to tag the image. Here, we have tagged the image `mtcc`. If you run:
-```bash
-docker images
-```
-You should see a `mtcc` image under the REPOSITORY column. For example:
-```
-REPOSITORY   TAG       IMAGE ID       CREATED              SIZE
-mtcc         latest    70b0759a094d   About a minute ago   1.02GB
-```
-
-#### Run the Docker container
-Now that you have built the image, you can run the container by executing:
-```bash
-docker run -p 8501:8501 mtcc
-```
-The `-p` flag publishes the container’s port 8501 to your server’s 8501 port.
-
-If all went well, you should see an output similar to the following:
-```
-docker run -p 8501:8501 mtcc
-
-  You can now view mtcc app in your browser.
-
-  URL: http://0.0.0.0:8501
-```
-To view mtcc app, users can browse to [`http://0.0.0.0:8501`](http://0.0.0.0:8501) or [`http://localhost:8501`](http://localhost:8501)
-
-#### With docker-compose
+### Run mtcc with doker-compose
 `docker-compose` is a powerful tool that allows you to define and manage multi-container applications. While it excels at orchestrating multiple containers, you can also use it for simplifying the build and run process of a single container. Here's how you can use docker-compose to build and run your container with a single command:
 ```bash
 docker-compose up --build
 ```
-The `--build` flag ensures that the images are rebuilt if there are any changes in the Dockerfiles or build context.
+> The `--build` flag ensures that the images are rebuilt if there are any changes in the Dockerfiles or build context.
+
+If you prefer to run the container in the background:
+```bash
+docker-compose up -d --build
+```
+> The `-d` flag runs the container in detached mode (it runs in the background).
 
 If all goes well, you should see the output indicating that the containers are being built and started. Once the process is complete, you should see a message similar to the following:
 ```
@@ -150,6 +119,29 @@ streamlit_1  |
 Your mtcc app is now running inside a container.
 
 To view your mtcc app, open a web browser and navigate to [`http://localhost:8501`](http://localhost:8501). You should be able to access and interact with mtcc.
+
+### Custom DNS server (Error Resolution)
+When the app is deployed on my nas I was getting errors like this:
+```bash
+ Album not found for album name : HTTPSConnectionPool(host='api.deezer.com', port=443): Max retries exceeded with url: /search/album?q=name (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7f27cc4b02e0>: Failed to resolve 'api.deezer.com' ([Errno -3] Temporary failure in name resolution)"))
+```
+To solve this problem I use the Cloudflare DNS server. You can replace this IP address with that of your preferred DNS server in the `docker-compose.yml` or simply remove it if you don't need it.
+
+### Access to the logs
+As default:
+```bash 
+docker logs mtcc_streamlit_1
+```
+If you don't have the default configuration you can:
+```
+$ docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED             STATUS                       PORTS                    NAMES
+0b0e21ffce17   mtcc_streamlit   "streamlit run mtcc/…"   About an hour ago   Up About an hour (healthy)   0.0.0.0:8501->8501/tcp   mtcc_streamlit_1
+```
+and then:
+```bash
+docker logs <CONTAINER ID or NAMES>
+```
 
 ## Contribute
 
@@ -239,10 +231,8 @@ I already have many ideas for improvement, such as:
 - Adding a function to add a "like" next to a track in the presentation
 - Improving the UI
 - Adding a help section to access the app on a custom domain name
-- Adding logging to the app for better debugging
 - Adding tests for better code quality
 - Adding continuous integration (CI) for automated testing and deployment
-- Adding more type hints for better code readability and maintainability
 
 ## License
 mtcc is completely free and open-source and licensed under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.

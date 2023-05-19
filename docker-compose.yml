@@ -7,3 +7,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8501:8501"
+    dns:
+      - 1.1.1.1
