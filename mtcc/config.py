@@ -9,6 +9,7 @@ CONFIG = configparser.ConfigParser()
 CONFIG.read(CONFIG_PATH)
 
 MTCC_LINK = "https://github.com/GuiEpi/mtcc"
+MTCC_LOGO_LINK = "https://raw.githubusercontent.com/GuiEpi/mtcc/master/assets"
 
 # nfo
 NFO_NAME = "mtcc Nfo Builder"
@@ -51,19 +52,22 @@ if PRES_DEFAULT_BANNER in PRES_BANNERS:
     PRES_BANNERS.move_to_end(PRES_DEFAULT_BANNER, last=False)
 
 # logging
-formatter = logging.Formatter(
-    "%(asctime)s %(module)9s:%(lineno)-4s %(levelname)-9s %(message)s"
-)
-logbytes = 512000
-logbackups = 3
+def setup_logger(name: str, level=logging.INFO, logbytes=512000, logbackups=3):
+    formatter = logging.Formatter(
+        "%(asctime)s %(module)9s:%(lineno)-7s %(levelname)-9s %(message)s"
+    )
 
-def setup_logger(name: str, level=logging.INFO):
-    handler = logging.StreamHandler()
-    handler = RotatingFileHandler(f"mtcc.log", "a", logbytes, logbackups)
-    handler.setFormatter(formatter)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+
+    file_handler = RotatingFileHandler(
+        "mtcc.log", mode="a", maxBytes=logbytes, backupCount=logbackups
+    )
+    file_handler.setFormatter(formatter)
 
     logger = logging.getLogger(name)
     logger.setLevel(level)
-    logger.addHandler(handler)
+    logger.addHandler(stream_handler)
+    logger.addHandler(file_handler)
 
     return logger

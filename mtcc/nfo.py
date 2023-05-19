@@ -37,9 +37,9 @@ class Nfo:
                 track[tag_properties] = tag_file[tag_properties]
 
             if "track_name_position" not in tag_file:
-                self.logger.critical(f"Missing track number for file {track['track_name']}")
-                raise ValueError(f"Missing track number for file {track['track_name']}")
-
+                self.logger.critical(
+                    f"Missing track number for file {track['track_name']}"
+                )
 
             track["track_name_len"] = len(track["track_name"])
 
@@ -59,8 +59,7 @@ class Nfo:
         self.tracks.sort(key=lambda k: int(k["track_name_position"]))
 
         if len(self.tracks) == 0:
-            self.logger.critical('No media file found!')
-            raise ValueError("No media file found!")
+            self.logger.critical("No media file found!")
 
         self.properties.update(self.tracks[0])
         self._format_properties(playing_time)

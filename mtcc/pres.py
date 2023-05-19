@@ -50,14 +50,18 @@ class Pres:
         album = None
         if self.nfo_properties:
             try:
-                artists = self.client.search_artists(self.nfo_properties["album_performer"])
+                artists = self.client.search_artists(
+                    self.nfo_properties["album_performer"]
+                )
                 for artist in artists[:10]:
                     for album in artist.get_albums():
                         if self.nfo_properties["album"] == album.title:
                             self.update_properties(album)
                             return album
             except Exception as e:
-                self.logger.error(f"Album not found for performer {self.nfo_properties['album_performer']} : {e}")
+                self.logger.error(
+                    f"Album not found for performer {self.nfo_properties['album_performer']} : {e}"
+                )
                 return album
         return album
 
@@ -71,7 +75,9 @@ class Pres:
                         self.update_properties(album)
                         return album
             except Exception as e:
-                self.logger.error(f"Album not found for album {self.nfo_properties['album']} : {e}")
+                self.logger.error(
+                    f"Album not found for album {self.nfo_properties['album']} : {e}"
+                )
                 return album
         return album
 
